@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const Register = () => {
-  const { registerUser } = useContext(AuthContext);
+  const { setUser, registerUser } = useContext(AuthContext);
   const [error, setError] = useState("");
   const handleRegister = (e) => {
     e.preventDefault();
@@ -31,7 +31,13 @@ const Register = () => {
     }
     setError("");
 
-    registerUser(email, password);
+    registerUser(email, password)
+      .then((result) => {
+        setUser(result.user);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
   };
   return (
     <div className="w-[40%] max-w-[50%] mx-auto">
